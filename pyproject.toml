@@ -7,6 +7,11 @@ authors = ["Patrick Rodrigues <patrick.pwall@gmail.com>"]
 
 [tool.poetry.dev-dependencies]
 
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = "^0.17.6"
+fastapi = "^0.75.1"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
