@@ -6,12 +6,54 @@ authors = ["Patrick Rodrigues <patrick.pwall@gmail.com>"]
 
 
 [tool.poetry.dev-dependencies]
+python-dotenv = "^0.20.0"
+pytest = "^7.1.1"
+pytest-asyncio = "^0.18.3"
+pytest-cov = "^3.0.0"
+pytest-envvars = "^1.2.1"
+aiosqlite = "^0.17.0"
+pre-commit = "^2.18.1"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 uvicorn = "^0.17.6"
 fastapi = "^0.75.1"
+SQLAlchemy = {extras = ["asyncio"], version = "^1.4.35"}
+asyncpg = "^0.25.0"
+sqlmodel = "^0.0.6"
+typer = "^0.4.1"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+httpx = "^0.22.0"
+Faker = "^13.3.4"
+PyJWT = "^2.3.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+addopts = "-vv --cov-report=term-missing --cov=sensors_api --cov-branch --cov-report=html"
+asyncio_mode = "strict"
+pytestenvvars__env_files = [".env"]
+
+[tool.coverage.report]
+omit = [
+    "sensors_api/__main__.py",
+    "sensors_api/scripts.py",
+    "sensors_api/api/__init__.py",
+    "sensors_api/db/connection.py"
+]
+
+[tool.black]
+line-length = 110
+target-version = ["py310"]
+
+[tool.isort]
+line_length = 110
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+known_local_folder = ["tests", "sensors_api"]

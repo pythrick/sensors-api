@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+  api:
+    image: sensors-api
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: on-failure
+    command: ["run-server"]
+
+  simulator:
+    image: sensors-api
+    build: .
+    env_file:
+      - .env
+    environment:
+      HOST: api
+    command: [ "run-simulator", "--devices", "10" ]
+    depends_on:
+      - api
+
+  db:
+    image: postgres:14.2-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  pgdata:
