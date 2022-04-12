@@ -28,17 +28,3 @@ class ModelNotFound(BaseHttpException):
 
 class DeviceNotFound(ModelNotFound):
     pass
-
-
-@dataclass
-class Unauthorized(BaseHttpException):
-    status_code: int = status.HTTP_401_UNAUTHORIZED
-
-
-@dataclass
-class Forbidden(BaseHttpException):
-    status_code: int = status.HTTP_403_FORBIDDEN
-
-
-class InvalidToken(Forbidden):
-    pass

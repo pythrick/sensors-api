@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from sensors_api.helpers import to_camel
+from shared.helpers import to_camel
 
 
 class BaseSchema(BaseModel):

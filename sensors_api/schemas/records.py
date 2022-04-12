@@ -1,7 +1,8 @@
 from datetime import datetime
 from decimal import Decimal
 
-from sensors_api.enums import StatusEnum
+from shared.enums import StatusEnum
+
 from sensors_api.schemas.base_schema import BaseSchema
 
 

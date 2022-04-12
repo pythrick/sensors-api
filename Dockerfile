@@ -1,4 +1,4 @@
-FROM python:3.10.4-slim
+FROM python:3.10.4-slim as builder
 
 ARG ENV
 
@@ -21,9 +21,15 @@ WORKDIR /tmp
 COPY pyproject.toml poetry.lock ./
 RUN poetry install $(test "$ENV" == production && echo "--no-dev")
 
+FROM builder as sensors_api
 WORKDIR /app
 COPY sensors_api ./sensors_api
+COPY shared ./shared
 COPY config.py ./
-COPY manage.py ./
+ENTRYPOINT ["uvicorn", "sensors_api.api:app", "--host", "0.0.0.0", "--port", "8000"]
 
-ENTRYPOINT ["python", "manage.py"]
+FROM builder as sensors_simulator
+WORKDIR /app
+COPY sensors_simulator ./sensors_simulator
+COPY shared ./shared
+ENTRYPOINT ["python", "sensors_simulator"]

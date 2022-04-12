@@ -4,10 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from config import settings
 
 from sensors_api.core.records import create_record, get_record_status_histogram
-from sensors_api.dependencies import get_session, get_token_header
+from sensors_api.dependencies import get_session
 from sensors_api.schemas.records import RecordIn, RecordInResponse, RecordStatus
 
-records_router = APIRouter(prefix="/records", tags=["Records"], dependencies=[Depends(get_token_header)])
+records_router = APIRouter(prefix="/records", tags=["Records"])
 
 
 @records_router.post(

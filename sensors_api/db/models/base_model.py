@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlmodel import Field, SQLModel
 
-from sensors_api.helpers import generate_uuid
+from shared.helpers import generate_uuid
 
 
 class BaseModel(SQLModel):

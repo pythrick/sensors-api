@@ -5,6 +5,11 @@ from fastapi import FastAPI
 from sensors_api.api.v1 import v1_router
 from sensors_api.db.connection import init_db
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s\t%(asctime)s\t%(message)s",
+)
+
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
@@ -18,7 +23,6 @@ app.include_router(v1_router)
 
 @app.on_event("startup")
 async def on_startup():
-    from sensors_api.db.models.account import ClientAccount  # noqa
     from sensors_api.db.models.device import Device  # noqa
     from sensors_api.db.models.record import Record  # noqa
 
