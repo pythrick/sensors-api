@@ -10,7 +10,13 @@ services:
       - "8000:8000"
     env_file:
       - .env
+    environment:
+      COLLECTOR_ENDPOINT: "otel-collector:4317"
     restart: on-failure
+    networks:
+      - dev
+    depends_on:
+      - db
 
   simulator:
     image: sensors-simulator
@@ -21,9 +27,14 @@ services:
       - .env
     environment:
       HOST: api
-    command: [ "--devices", "10", "--base-url", "http://api:8000" ]
+      COLLECTOR_ENDPOINT: "otel-collector:4317"
+    restart: on-failure
+    command: [ "--devices", "300", "--base-url", "http://api:8000", "--streaming-interval", "1" ]
     depends_on:
+      - db
       - api
+    networks:
+      - dev
 
   db:
     image: postgres:14.2-alpine
@@ -34,6 +45,44 @@ services:
     env_file:
       - .env
     restart: always
+    networks:
+      - dev
+
+  jaeger-all-in-one:
+    image: jaegertracing/all-in-one
+    environment:
+      - JAEGER_DISABLED=false
+    networks:
+      - dev
+    restart: on-failure
+    ports:
+      - "16686:16686"
+      - "6831:6831/udp"
+      - "14268"
+      - "14250"
+
+  # Collector
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: ["--config=/etc/otel-collector-config.yaml", "${OTELCOL_ARGS}"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    networks:
+      - dev
+    restart: on-failure
+    ports:
+      - "1888:1888"   # pprof extension
+      - "8888:8888"   # Prometheus' metrics exposed by the collector
+      - "8889:8889"   # Prometheus exporter metrics
+      - "13133:13133" # health_check extension
+      - "4317:4317"   # OTLP gRPC receiver
+      - "9411"   # Zipkin receiver
+      - "55679" # zpages extension
+    depends_on:
+      - jaeger-all-in-one
+
+networks:
+  dev:
 
 volumes:
   pgdata:

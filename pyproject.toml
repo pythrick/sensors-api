@@ -24,6 +24,14 @@ sqlmodel = "^0.0.6"
 httpx = "^0.22.0"
 Faker = "^13.3.4"
 typer = "^0.4.1"
+opentelemetry-instrumentation-fastapi = "^0.30b1"
+opentelemetry-instrumentation-asyncpg = "^0.30b1"
+opentelemetry-instrumentation-httpx = "^0.30b1"
+opentelemetry-api = "^1.11.1"
+opentelemetry-sdk = "^1.11.1"
+opentelemetry-exporter-jaeger = "^1.11.1"
+opentelemetry-instrumentation-sqlalchemy = "^0.30b1"
+opentelemetry-exporter-otlp = "^1.11.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

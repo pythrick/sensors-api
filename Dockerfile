@@ -26,10 +26,15 @@ WORKDIR /app
 COPY sensors_api ./sensors_api
 COPY shared ./shared
 COPY config.py ./
-ENTRYPOINT ["python", "sensors_api"]
+
+COPY deployments/entrypoints/sensors-api.sh /usr/local/bin/sensors-api.sh
+ENTRYPOINT ["sensors-api.sh"]
 
 FROM builder as sensors_simulator
 WORKDIR /app
 COPY sensors_simulator ./sensors_simulator
 COPY shared ./shared
-ENTRYPOINT ["python", "sensors_simulator"]
+COPY config.py ./
+
+COPY deployments/entrypoints/sensors-simulator.sh /usr/local/bin/sensors-simulator.sh
+ENTRYPOINT ["sensors-simulator.sh"]
